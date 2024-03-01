@@ -7,6 +7,10 @@ android {
     namespace = "ie.setu.mobileassignment"
     compileSdk = 34
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "ie.setu.mobileassignment"
         minSdk = 30
