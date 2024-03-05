@@ -13,6 +13,7 @@ class RecipeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRecipeBinding
     var recipe = RecipeModel()
+    val recipes = ArrayList<RecipeModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +27,10 @@ class RecipeActivity : AppCompatActivity() {
 
         binding.btnAdd.setOnClickListener() {
             recipe.title = binding.recipeTitle.text.toString()
+            recipe.description = binding.recipeDescription.text.toString()
+            recipe.ingredients.add(binding.recipeIngredient.text.toString())
             if (recipe.title.isNotEmpty()) {
+                recipes.add(recipe.copy())
                 i("add Button Pressed: ${recipe.title}")
             }
             else {
