@@ -34,10 +34,10 @@ class RecipeActivity : AppCompatActivity() {
         setSupportActionBar(binding.topAppBar)
 
         app = application as MainApp
+        var edit = false
         i("Recipe Activity started..")
 
-
-        // setting u[ the adapter
+        // setting up the adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false).apply {
             stackFromEnd = true
         }
@@ -57,15 +57,33 @@ class RecipeActivity : AppCompatActivity() {
             }
         }
 
+        // On click listeners for adding and updating recipes
+        if(intent.hasExtra("foodrecipe_edit")) {
+            edit = true
+            recipe = intent.extras?.getParcelable("foodrecipe_edit")!!
+            binding.recipeTitle.setText(recipe.title)
+            binding.recipeDescription.setText(recipe.description)
+            binding.recipeIngredient.setText(recipe.ingredients.joinToString("\n"))
 
+            // Update Button Text for Saving Recipe
+            binding.btnAddRecipe.setText(R.string.button_saveRecipe)
+        }
+
+        // new button listner for (updating) not creating a new one
         // Click Listener for adding the recipe
         binding.btnAddRecipe.setOnClickListener() {
             recipe.title = binding.recipeTitle.text.toString()
             recipe.description = binding.recipeDescription.text.toString()
             recipe.ingredients.add(binding.recipeIngredient.text.toString())
-            if (recipe.title.isNotEmpty()) {
-                app.recipes.create(recipe.copy())
-                i("add Button Pressed: ${recipe.title}")
+            if(recipe.title.isNotEmpty()) {
+                if (edit) {
+                    app.recipes.update(recipe.copy())
+                    i("update Button Pressed: ${recipe.title}")
+                }
+                else {
+                    app.recipes.create(recipe.copy())
+                    i("add Button Pressed: ${recipe.title}")
+                }
                 setResult(RESULT_OK)
                 finish()
             }
