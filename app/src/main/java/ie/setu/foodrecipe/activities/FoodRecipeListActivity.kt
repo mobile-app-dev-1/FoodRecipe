@@ -70,6 +70,7 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
 
     override fun onFoodRecipeClick(recipe: RecipeModel) {
         val launcherIntent = Intent(this, RecipeActivity::class.java)
+        launcherIntent.putExtra("foodrecipe_edit", recipe)
         getResult.launch(launcherIntent)
     }
 }

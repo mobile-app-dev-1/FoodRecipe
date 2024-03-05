@@ -7,6 +7,9 @@
     <string name="hint_recipe_ingredients">Recipe Ingredients</string>
     <string name="button_addRecipe">Add Recipe</string>
 
+    <!-- Updating a Recipe -->
+    <string name="button_saveRecipe">Save Recipe</string>
+
     <!-- Action Bar -->
     <string name="menu_addRecipe">Add</string>
     <string name="menu_cancelRecipe">Cancel</string>
