@@ -18,13 +18,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="?attr/colorPrimary"
-            android:fitsSystemWindows="true"
-            app:elevation="0dip">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbarAdd"
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                app:titleTextColor= "?attr/colorOnPrimary"/>
         </com.google.android.material.appbar.AppBarLayout>
 
         <ScrollView

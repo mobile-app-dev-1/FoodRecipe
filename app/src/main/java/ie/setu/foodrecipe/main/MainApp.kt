@@ -14,7 +14,5 @@ class MainApp : Application() {
         Timber.plant(Timber.DebugTree())
         i("FoodRecipe started")
 
-        val myMutableList: MutableList<String> = mutableListOf("Beef Mince", "Spuds", "Carrots")
-        recipes.add(RecipeModel("Pie", "Beef Mince Pie", myMutableList))
     }
 }

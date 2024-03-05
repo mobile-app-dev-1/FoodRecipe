@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">FoodRecipe</string>
     <string name="button_addRecipe">Add Recipe</string>
 
@@ -8,4 +8,5 @@
 
     <!-- Action Bar -->
     <string name="menu_addRecipe">Add</string>
+    <string name="menu_cancelRecipe">Cancel</string>
 </resources>
