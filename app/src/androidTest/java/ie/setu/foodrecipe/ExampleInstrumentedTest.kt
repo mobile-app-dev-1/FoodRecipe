@@ -1,4 +1,4 @@
-package ie.setu.mobileassignment
+package ie.setu.foodrecipe
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

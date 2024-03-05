@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ie.setu.mobileassignment"
+    namespace = "ie.setu.foodrecipe"
     compileSdk = 34
 
     buildFeatures {
@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "ie.setu.mobileassignment"
+        applicationId = "ie.setu.foodrecipe"
         minSdk = 30
         targetSdk = 34
         versionCode = 1
