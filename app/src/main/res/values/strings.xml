@@ -5,4 +5,7 @@
     <string name="hint_recipeTitle">Recipe Title</string>
     <string name="hint_recipe_description">Recipe Description</string>
     <string name="hint_recipe_ingredients">Recipe Ingredients</string>
+
+    <!-- Action Bar -->
+    <string name="menu_addRecipe">Add</string>
 </resources>

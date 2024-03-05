@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".main.MainApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -11,16 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MobileAssignment"
-        android:name="ie.setu.foodrecipe.main.MainApp"
         tools:targetApi="31">
         <activity
-            android:name="ie.setu.foodrecipe.activities.RecipeActivity"
+            android:name=".activities.FoodRecipeListActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.RecipeActivity"
+            android:exported="true">
         </activity>
     </application>
 
