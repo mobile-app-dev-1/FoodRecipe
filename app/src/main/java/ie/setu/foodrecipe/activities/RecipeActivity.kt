@@ -1,11 +1,12 @@
-package ie.setu.mobileassignment.activities
+package ie.setu.foodrecipe.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
-import ie.setu.mobileassignment.databinding.ActivityRecipeBinding
-import ie.setu.mobileassignment.models.RecipeModel
-import timber.log.Timber
+import ie.setu.foodrecipe.databinding.ActivityRecipeBinding
+import ie.setu.foodrecipe.main.MainApp
+import ie.setu.foodrecipe.models.RecipeModel
+
 import timber.log.Timber.i
 
 
@@ -13,7 +14,7 @@ class RecipeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRecipeBinding
     var recipe = RecipeModel()
-    val recipes = ArrayList<RecipeModel>()
+    lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,17 +22,17 @@ class RecipeActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        Timber.plant(Timber.DebugTree())
-
+        app = application as MainApp
         i("Recipe Activity started..")
-
         binding.btnAdd.setOnClickListener() {
             recipe.title = binding.recipeTitle.text.toString()
             recipe.description = binding.recipeDescription.text.toString()
             recipe.ingredients.add(binding.recipeIngredient.text.toString())
             if (recipe.title.isNotEmpty()) {
-                recipes.add(recipe.copy())
+                app.recipes.add(recipe.copy())
                 i("add Button Pressed: ${recipe.title}")
+                for( i in app.recipes.indices)
+                { i("Recipe[$i]:$(this.app!!.recipes[i])")}
             }
             else {
                 Snackbar.make(it,"Please Enter a title", Snackbar.LENGTH_LONG).show()
