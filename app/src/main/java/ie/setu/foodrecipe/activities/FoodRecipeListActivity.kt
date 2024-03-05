@@ -13,8 +13,10 @@ import ie.setu.foodrecipe.R
 import ie.setu.foodrecipe.databinding.ActivityFoodRecipeListBinding
 import ie.setu.foodrecipe.main.MainApp
 import ie.setu.foodrecipe.adapters.FoodRecipeAdapter
+import ie.setu.foodrecipe.adapters.FoodRecipeListener
+import ie.setu.foodrecipe.models.RecipeModel
 
-class FoodRecipeListActivity : AppCompatActivity() {
+class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityFoodRecipeListBinding
@@ -32,7 +34,7 @@ class FoodRecipeListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = FoodRecipeAdapter(app.recipes)
+        binding.recyclerView.adapter = FoodRecipeAdapter(app.recipes.findAll(), this)
     }
 
     // Override the method to the load the new menu xml
@@ -59,10 +61,15 @@ class FoodRecipeListActivity : AppCompatActivity() {
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
                 (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.recipes.size)
+                notifyItemRangeChanged(0,app.recipes.findAll().size)
             }
             if(it.resultCode == Activity.RESULT_CANCELED) {
                 Snackbar.make(binding.root, "Recipe Add Cancelled", Snackbar.LENGTH_LONG).show()
             }
         }
+
+    override fun onFoodRecipeClick(recipe: RecipeModel) {
+        val launcherIntent = Intent(this, RecipeActivity::class.java)
+        getResult.launch(launcherIntent)
+    }
 }

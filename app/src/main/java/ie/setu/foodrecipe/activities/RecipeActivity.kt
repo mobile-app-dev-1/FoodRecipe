@@ -64,10 +64,8 @@ class RecipeActivity : AppCompatActivity() {
             recipe.description = binding.recipeDescription.text.toString()
             recipe.ingredients.add(binding.recipeIngredient.text.toString())
             if (recipe.title.isNotEmpty()) {
-                app.recipes.add(recipe.copy())
+                app.recipes.create(recipe.copy())
                 i("add Button Pressed: ${recipe.title}")
-                for( i in app.recipes.indices)
-                { i("Recipe[$i]:$(this.app!!.recipes[i])")}
                 setResult(RESULT_OK)
                 finish()
             }
