@@ -1,10 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">FoodRecipe</string>
-    <string name="button_addRecipe">Add Recipe</string>
 
+    <!-- Creating a Recipe -->
     <string name="hint_recipeTitle">Recipe Title</string>
     <string name="hint_recipe_description">Recipe Description</string>
     <string name="hint_recipe_ingredients">Recipe Ingredients</string>
+    <string name="button_addRecipe">Add Recipe</string>
 
     <!-- Action Bar -->
     <string name="menu_addRecipe">Add</string>
