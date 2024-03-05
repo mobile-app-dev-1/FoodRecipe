@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import ie.setu.foodrecipe.R
+import ie.setu.foodrecipe.adapters.IngredientAdapter
 import ie.setu.foodrecipe.databinding.ActivityRecipeBinding
 import ie.setu.foodrecipe.main.MainApp
 import ie.setu.foodrecipe.models.RecipeModel
@@ -19,6 +21,9 @@ class RecipeActivity : AppCompatActivity() {
     var recipe = RecipeModel()
     lateinit var app: MainApp
 
+    private lateinit var ingredientAdapter: IngredientAdapter
+    private val ingredientList: MutableList<String> = mutableListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRecipeBinding.inflate(layoutInflater)
@@ -30,7 +35,31 @@ class RecipeActivity : AppCompatActivity() {
 
         app = application as MainApp
         i("Recipe Activity started..")
-        binding.btnAdd.setOnClickListener() {
+
+
+        // setting u[ the adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false).apply {
+            stackFromEnd = true
+        }
+        ingredientAdapter = IngredientAdapter(ingredientList)
+        binding.recyclerView.adapter = ingredientAdapter
+
+        // Click listener for adding a ingredient
+        binding.ingredientAdd.setOnClickListener {
+            val newIngredient = binding.recipeIngredient.text.toString()
+            if (newIngredient.isNotEmpty()) {
+                ingredientList.add(newIngredient)
+                ingredientAdapter.notifyDataSetChanged()
+
+                i("IngredientList" + ingredientList.toString())
+                // Clear the EditText after adding the ingredient
+                binding.recipeIngredient.text.clear()
+            }
+        }
+
+
+        // Click Listener for adding the recipe
+        binding.btnAddRecipe.setOnClickListener() {
             recipe.title = binding.recipeTitle.text.toString()
             recipe.description = binding.recipeDescription.text.toString()
             recipe.ingredients.add(binding.recipeIngredient.text.toString())

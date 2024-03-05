@@ -4,19 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ie.setu.foodrecipe.R
 import ie.setu.foodrecipe.databinding.ActivityFoodRecipeListBinding
-import ie.setu.foodrecipe.databinding.CardFoodrecipeBinding
 import ie.setu.foodrecipe.main.MainApp
-import ie.setu.foodrecipe.models.RecipeModel
+import ie.setu.foodrecipe.adapters.FoodRecipeAdapter
 
 class FoodRecipeListActivity : AppCompatActivity() {
 
@@ -69,31 +65,4 @@ class FoodRecipeListActivity : AppCompatActivity() {
                 Snackbar.make(binding.root, "Recipe Add Cancelled", Snackbar.LENGTH_LONG).show()
             }
         }
-}
-
-class FoodRecipeAdapter constructor(private var recipes: List<RecipeModel>) :
-    RecyclerView.Adapter<FoodRecipeAdapter.MainHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        val binding = CardFoodrecipeBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
-
-        return MainHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val recipe = recipes[holder.adapterPosition]
-        holder.bind(recipe)
-    }
-
-    override fun getItemCount(): Int = recipes.size
-
-    class MainHolder(private val binding : CardFoodrecipeBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(recipe: RecipeModel) {
-            binding.foodRecipeTitle.text = recipe.title
-            binding.foodRecipeDescription.text = recipe.description
-        }
-    }
 }
