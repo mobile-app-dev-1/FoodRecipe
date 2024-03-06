@@ -47,6 +47,7 @@ class RecipeActivity : AppCompatActivity() {
         // Click listener for adding a ingredient
         binding.ingredientAdd.setOnClickListener {
             val newIngredient = binding.recipeIngredient.text.toString()
+
             if (newIngredient.isNotEmpty()) {
                 ingredientList.add(newIngredient)
                 ingredientAdapter.notifyDataSetChanged()
@@ -54,16 +55,24 @@ class RecipeActivity : AppCompatActivity() {
                 i("IngredientList" + ingredientList.toString())
                 // Clear the EditText after adding the ingredient
                 binding.recipeIngredient.text.clear()
+
+                // Add the ingredient to the recipe.ingredients list
+                recipe.ingredients.add(newIngredient)
             }
+
         }
 
-        // On click listeners for adding and updating recipes
+        // Check if activity is in edit (update mode)
         if(intent.hasExtra("foodrecipe_edit")) {
             edit = true
             recipe = intent.extras?.getParcelable("foodrecipe_edit")!!
             binding.recipeTitle.setText(recipe.title)
             binding.recipeDescription.setText(recipe.description)
-            binding.recipeIngredient.setText(recipe.ingredients.joinToString("\n"))
+
+            // Set up RecyclerView with LinearLayoutManager
+            ingredientList.addAll(recipe.ingredients)
+            ingredientAdapter.notifyDataSetChanged()  // Notify the adapter of the initial data
+            binding.recyclerView.adapter = ingredientAdapter
 
             // Update Button Text for Saving Recipe
             binding.btnAddRecipe.setText(R.string.button_saveRecipe)
@@ -72,23 +81,28 @@ class RecipeActivity : AppCompatActivity() {
         // new button listner for (updating) not creating a new one
         // Click Listener for adding the recipe
         binding.btnAddRecipe.setOnClickListener() {
-            recipe.title = binding.recipeTitle.text.toString()
+            recipe.title = binding.recipeTitle.text.toString().trim()
             recipe.description = binding.recipeDescription.text.toString()
-            recipe.ingredients.add(binding.recipeIngredient.text.toString())
-            if(recipe.title.isNotEmpty()) {
+
+            val newIngredient = binding.recipeIngredient.text.toString().trim()
+
+            // Check if the new ingredient is not empty before adding it
+            if (newIngredient.isNotEmpty()) {
+                recipe.ingredients.add(newIngredient)
+            }
+
+            if (recipe.title.isNotEmpty()) {
                 if (edit) {
                     app.recipes.update(recipe.copy())
                     i("update Button Pressed: ${recipe.title}")
-                }
-                else {
+                } else {
                     app.recipes.create(recipe.copy())
                     i("add Button Pressed: ${recipe.title}")
                 }
                 setResult(RESULT_OK)
                 finish()
-            }
-            else {
-                Snackbar.make(it,"Please Enter a title", Snackbar.LENGTH_LONG).show()
+            } else {
+                Snackbar.make(it, "Please Enter a title", Snackbar.LENGTH_LONG).show()
             }
         }
     }
