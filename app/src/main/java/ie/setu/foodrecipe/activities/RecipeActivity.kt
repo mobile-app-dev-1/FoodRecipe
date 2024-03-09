@@ -1,14 +1,19 @@
 package ie.setu.foodrecipe.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import ie.setu.foodrecipe.R
 import ie.setu.foodrecipe.adapters.IngredientAdapter
 import ie.setu.foodrecipe.databinding.ActivityRecipeBinding
+import ie.setu.foodrecipe.helpers.showImagePicker
 import ie.setu.foodrecipe.main.MainApp
 import ie.setu.foodrecipe.models.RecipeModel
 
@@ -23,6 +28,8 @@ class RecipeActivity : AppCompatActivity() {
 
     private lateinit var ingredientAdapter: IngredientAdapter
     private val ingredientList: MutableList<String> = mutableListOf()
+
+    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,9 +81,22 @@ class RecipeActivity : AppCompatActivity() {
             ingredientAdapter.notifyDataSetChanged()  // Notify the adapter of the initial data
             binding.recyclerView.adapter = ingredientAdapter
 
+            // Call Picasso to load the image URI into the image view
+            Picasso.get()
+                .load(recipe.image)
+                .into(binding.recipeImage)
+
+            // Update Button text for updating an image
+            binding.chooseImage.setText(R.string.button_updateImage)
             // Update Button Text for Saving Recipe
             binding.btnAddRecipe.setText(R.string.button_saveRecipe)
         }
+
+        // Button listener for adding an image
+        binding.chooseImage.setOnClickListener {
+            showImagePicker(imageIntentLauncher)
+        }
+        registerImagePickerCallback()
 
         // new button listner for (updating) not creating a new one
         // Click Listener for adding the recipe
@@ -122,5 +142,23 @@ class RecipeActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    // Callback function for image selection
+    private fun registerImagePickerCallback() {
+        imageIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when(result.resultCode){
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Result ${result.data!!.data}")
+                            recipe.image = result.data!!.data!!
+                            Picasso.get().load(recipe.image).into(binding.recipeImage)
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
     }
 }
