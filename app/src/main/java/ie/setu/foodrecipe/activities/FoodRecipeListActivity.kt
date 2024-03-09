@@ -6,8 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import ie.setu.foodrecipe.R
 import ie.setu.foodrecipe.databinding.ActivityFoodRecipeListBinding
@@ -21,20 +27,59 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityFoodRecipeListBinding
 
+    // Dark mode theme
+    private var isDarkTheme = false
+
+    // Nav Drawer
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navView: NavigationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFoodRecipeListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // reference to the main application (parent of app)
+        app = application as MainApp
+
+        // Initialize DrawerLayout and NavigationView
+        drawerLayout = binding.drawerLayout
+        navView = binding.navView
+        // toggle the Actionbar menu (ham burger icon)
+        val toggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            binding.topAppBar,
+            R.string.nav_drawer_open,
+            R.string.nav_drawer_close
+        )
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
 
         binding.topAppBar.title = title
         setSupportActionBar(binding.topAppBar)
 
-        setContentView(binding.root)
-
-        app = application as MainApp
-
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = FoodRecipeAdapter(app.recipes.findAll(), this)
+
+        // Set up NavigationView (drawer) item click listener
+        navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_dark_mode -> {
+                    if(isDarkTheme) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    } else {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    }
+                    isDarkTheme = !isDarkTheme
+                    Toast.makeText(this, "Dark Mode Toggle", Toast.LENGTH_SHORT).show()
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                }
+            }
+            // return true, The event has been handled and no further action is needed
+            true
+        }
     }
 
     // Override the method to the load the new menu xml
@@ -49,6 +94,14 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, RecipeActivity::class.java)
                 getResult.launch(launcherIntent)
+            }
+            android.R.id.home -> {
+                // Handle the Navigation Drawer toggle icon
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    drawerLayout.openDrawer(GravityCompat.START)
+                }
             }
         }
         return super.onOptionsItemSelected(item)
