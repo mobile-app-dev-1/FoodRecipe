@@ -60,7 +60,7 @@
                     android:autofillHints="hint"
                     android:hint="@string/hint_recipe_description"
                     android:inputType="text"
-                    android:maxLength="50"
+                    android:maxLength="80"
                     android:maxLines="3"
                     android:padding="8dp" />
 
