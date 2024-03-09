@@ -107,8 +107,8 @@
                     <!-- Image View -->
                     <ImageView
                         android:id="@+id/recipeImage"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="80dp"
                         android:layout_weight="1"
                         app:srcCompat="@mipmap/ic_launcher"
                         android:contentDescription="@string/hint_recipe_image_description" />

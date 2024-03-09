@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import ie.setu.foodrecipe.R
 import ie.setu.foodrecipe.adapters.IngredientAdapter
 import ie.setu.foodrecipe.databinding.ActivityRecipeBinding
@@ -80,6 +81,13 @@ class RecipeActivity : AppCompatActivity() {
             ingredientAdapter.notifyDataSetChanged()  // Notify the adapter of the initial data
             binding.recyclerView.adapter = ingredientAdapter
 
+            // Call Picasso to load the image URI into the image view
+            Picasso.get()
+                .load(recipe.image)
+                .into(binding.recipeImage)
+
+            // Update Button text for updating an image
+            binding.chooseImage.setText(R.string.button_updateImage)
             // Update Button Text for Saving Recipe
             binding.btnAddRecipe.setText(R.string.button_saveRecipe)
         }
@@ -145,6 +153,8 @@ class RecipeActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Result ${result.data!!.data}")
+                            recipe.image = result.data!!.data!!
+                            Picasso.get().load(recipe.image).into(binding.recipeImage)
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
