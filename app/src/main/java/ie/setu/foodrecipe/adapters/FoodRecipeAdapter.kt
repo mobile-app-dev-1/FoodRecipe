@@ -35,6 +35,7 @@ class FoodRecipeAdapter constructor(private var recipes: List<RecipeModel>, priv
         fun bind(recipe: RecipeModel, listener: FoodRecipeListener) {
             binding.foodRecipeTitle.text = recipe.title
             binding.foodRecipeDescription.text = recipe.description
+            binding.foodRecipeCardCuisine.text = recipe.cuisine
             Picasso.get()
                 .load(recipe.image)
                 .into(binding.recipeImage)

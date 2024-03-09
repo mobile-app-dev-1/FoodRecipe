@@ -10,38 +10,63 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- ImageView on the left side -->
-        <ImageView
-            android:id="@+id/recipeImage"
-            android:layout_width="75dp"
-            android:layout_height="65dp"
-            android:src="@mipmap/ic_launcher"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="16dp" />
-
-        <RelativeLayout
-            android:layout_width="0dp"
+        <!-- Your existing layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:orientation="horizontal">
+
+            <!-- ImageView on the left side -->
+            <ImageView
+                android:id="@+id/recipeImage"
+                android:layout_width="75dp"
+                android:layout_height="65dp"
+                android:src="@mipmap/ic_launcher"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="16dp" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/foodRecipeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    tools:text="A Title" />
+
+                <TextView
+                    android:id="@+id/foodRecipeDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/foodRecipeTitle"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    tools:text="A Description" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <!-- New LinearLayout for attributes/tags -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
 
             <TextView
-                android:id="@+id/foodRecipeTitle"
+                android:id="@+id/foodRecipe_card_Cuisine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                tools:text="A Title" />
-
-            <TextView
-                android:id="@+id/foodRecipeDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/foodRecipeTitle"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                tools:text="A Description" />
-        </RelativeLayout>
+                android:textAppearance="?attr/textAppearanceTitleSmall"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                android:textColor="#808080"
+                tools:text="Cuisine Type" />
+        </LinearLayout>
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
