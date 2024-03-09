@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,6 +54,33 @@ class RecipeActivity : AppCompatActivity() {
         ingredientAdapter = IngredientAdapter(ingredientList)
         binding.recyclerView.adapter = ingredientAdapter
 
+        // Dropdown spinner for cuisine types
+        val cuisineTypes = listOf("Pick a cuisine", "Irish", "Italian", "Japanese", "Mexican", "Indian", "Chinese")
+
+        val cuisineSpinner = binding.cuisineSpinner
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, cuisineTypes)
+        // Layout to use when the list of choices appear
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Apply the adapter to the spinner
+        cuisineSpinner.adapter = adapter
+
+        // Set a listener to handle the selected item
+        cuisineSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+                // Handle the selected item here, for example, save it to your data model
+                val selectedCuisine = cuisineTypes[position]
+                // Now you can use 'selectedCuisine' in your data model
+                recipe.cuisine = selectedCuisine
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+                recipe.cuisine = ""
+            }
+        }
+
+
         // Click listener for adding a ingredient
         binding.ingredientAdd.setOnClickListener {
             val newIngredient = binding.recipeIngredient.text.toString()
@@ -80,6 +110,27 @@ class RecipeActivity : AppCompatActivity() {
             ingredientList.addAll(recipe.ingredients)
             ingredientAdapter.notifyDataSetChanged()  // Notify the adapter of the initial data
             binding.recyclerView.adapter = ingredientAdapter
+
+            // Set up the spinner selection based on the recipe's cuisine
+            val cuisineIndex = cuisineTypes.indexOf(recipe.cuisine)
+            if (cuisineIndex != -1) {
+                cuisineSpinner.setSelection(cuisineIndex)
+                i("Selected cuisine index: $cuisineIndex")
+            } else {
+                i("Cuisine index not found for ${recipe.cuisine}")
+            }
+
+            cuisineSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+                    // Update the data model's cuisine property when an item is selected
+                    recipe.cuisine = cuisineTypes[position]
+                    i("Selected cuisine: ${recipe.cuisine}")
+                }
+
+                override fun onNothingSelected(parentView: AdapterView<*>?) {
+                    // Do nothing when nothing is selected
+                }
+            }
 
             // Call Picasso to load the image URI into the image view
             Picasso.get()
