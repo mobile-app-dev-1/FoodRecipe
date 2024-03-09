@@ -7,27 +7,41 @@
     android:layout_margin="8dp"
     android:elevation="24dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/foodRecipeTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
-            tools:text="A Title" />
+        <!-- ImageView on the left side -->
+        <ImageView
+            android:id="@+id/recipeImage"
+            android:layout_width="75dp"
+            android:layout_height="65dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp" />
 
-        <TextView
-            android:id="@+id/foodRecipeDescription"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/foodRecipeTitle"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            tools:text="A Description" />
+            android:layout_weight="1">
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/foodRecipeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                tools:text="A Title" />
+
+            <TextView
+                android:id="@+id/foodRecipeDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/foodRecipeTitle"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                tools:text="A Description" />
+        </RelativeLayout>
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
