@@ -60,7 +60,7 @@
                     android:autofillHints="hint"
                     android:hint="@string/hint_recipe_description"
                     android:inputType="text"
-                    android:maxLength="50"
+                    android:maxLength="80"
                     android:maxLines="3"
                     android:padding="8dp" />
 
@@ -99,6 +99,14 @@
 
                 </LinearLayout>
 
+                <!-- Spinner for Cuisine Types -->
+
+                <Spinner
+                    android:id="@+id/cuisineSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_margin="8dp"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -123,7 +131,7 @@
                         android:paddingBottom="8dp"
                         android:paddingTop="8dp"
                         android:backgroundTint="?attr/colorSecondary"
-                        android:text="@string/button_addImage"/>
+                        android:text="@string/button_addImagee"/>
                 </LinearLayout>
 
                 <!-- Add Recipe / Save Recipe -->
