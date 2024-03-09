@@ -22,7 +22,7 @@ Welcome to FoodRecipe, an Android application developed in Kotlin that allows us
 
 ## Screenshots
 
-Include screenshots or links to screenshots here to give users a visual preview of the application's user interface.
+![Screenhots](https://i.imgur.com/jQ4f749.png)
 
 ## Installation
 
