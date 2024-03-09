@@ -78,6 +78,11 @@ class RecipeActivity : AppCompatActivity() {
             binding.btnAddRecipe.setText(R.string.button_saveRecipe)
         }
 
+        // Button listener for adding an image
+        binding.chooseImage.setOnClickListener {
+            i("Select image")
+        }
+
         // new button listner for (updating) not creating a new one
         // Click Listener for adding the recipe
         binding.btnAddRecipe.setOnClickListener() {

@@ -99,6 +99,34 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Image View -->
+                    <ImageView
+                        android:id="@+id/recipeImage"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@mipmap/ic_launcher"
+                        android:contentDescription="@string/hint_recipe_image_description" />
+
+                    <!-- Image Button -->
+                    <Button
+                        android:id="@+id/chooseImage"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="16dp"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:backgroundTint="?attr/colorSecondary"
+                        android:text="@string/button_addImage"/>
+                </LinearLayout>
+
+                <!-- Add Recipe / Save Recipe -->
                 <Button
                     android:id="@+id/btnAddRecipe"
                     android:layout_width="match_parent"
