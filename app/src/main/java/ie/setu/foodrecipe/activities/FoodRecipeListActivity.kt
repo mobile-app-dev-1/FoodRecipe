@@ -66,6 +66,14 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_dark_mode -> {
+                    if(isDarkTheme) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    } else {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    }
+                    isDarkTheme = !isDarkTheme
+                    Toast.makeText(this, "Dark Mode Toggle", Toast.LENGTH_SHORT).show()
+                    drawerLayout.closeDrawer(GravityCompat.START)
                 }
             }
 
