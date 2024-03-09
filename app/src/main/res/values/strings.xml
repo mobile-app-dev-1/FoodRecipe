@@ -8,6 +8,8 @@
     <string name="button_addRecipe">Add Recipe</string>
     <string name="button_addImage">Add Image</string>
     <string name="hint_recipe_image_description">Recipe Image</string>
+    <string name="select_recipe_image">Select recipe image</string>
+
 
     <!-- Updating a Recipe -->
     <string name="button_saveRecipe">Save Recipe</string>
