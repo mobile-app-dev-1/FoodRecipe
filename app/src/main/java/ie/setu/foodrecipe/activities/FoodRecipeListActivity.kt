@@ -39,12 +39,13 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
         binding = ActivityFoodRecipeListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // reference to the main application (parent of app)
         app = application as MainApp
 
         // Initialize DrawerLayout and NavigationView
         drawerLayout = binding.drawerLayout
         navView = binding.navView
-
+        // toggle the Actionbar menu (ham burger icon)
         val toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
@@ -76,7 +77,7 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
                     drawerLayout.closeDrawer(GravityCompat.START)
                 }
             }
-
+            // return true, The event has been handled and no further action is needed
             true
         }
     }
