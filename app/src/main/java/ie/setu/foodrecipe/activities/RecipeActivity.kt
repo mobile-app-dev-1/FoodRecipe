@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -99,6 +100,14 @@ class RecipeActivity : AppCompatActivity() {
 
         }
 
+        // Set up the listener for the RatingBar
+        var selectedRating = 0.0f
+
+        binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
+            // Update the selectedRating when the user adjusts the rating
+            selectedRating = rating
+        }
+
         // Check if activity is in edit (update mode)
         if(intent.hasExtra("foodrecipe_edit")) {
             edit = true
@@ -156,6 +165,9 @@ class RecipeActivity : AppCompatActivity() {
             recipe.description = binding.recipeDescription.text.toString()
 
             val newIngredient = binding.recipeIngredient.text.toString().trim()
+
+            // Include the selectedRating while updating or creating a recipe
+            recipe.ratings.add(selectedRating)
 
             // Check if the new ingredient is not empty before adding it
             if (newIngredient.isNotEmpty()) {
