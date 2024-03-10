@@ -25,6 +25,7 @@ class FoodRecipeMemStore : FoodRecipeStore{
             foundRecipe.description = recipe.description
             foundRecipe.image = recipe.image
             foundRecipe.cuisine = recipe.cuisine
+            foundRecipe.ratings = recipe.ratings
             foundRecipe.ingredients = recipe.ingredients
             logAll()
         }
