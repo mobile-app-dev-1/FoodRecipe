@@ -36,6 +36,7 @@ class FoodRecipeAdapter constructor(private var recipes: List<RecipeModel>, priv
             binding.foodRecipeTitle.text = recipe.title
             binding.foodRecipeDescription.text = recipe.description
             binding.foodRecipeCardCuisine.text = recipe.cuisine
+            binding.ratingBar.rating = recipe.ratings.average().toFloat()
             Picasso.get()
                 .load(recipe.image)
                 .into(binding.recipeImage)
