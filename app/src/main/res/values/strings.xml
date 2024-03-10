@@ -19,7 +19,10 @@
     <string name="menu_addRecipe">Add</string>
     <string name="menu_cancelRecipe">Cancel</string>
 
-    <!-- -->
+    <!-- App Settings Menu -->
     <string name="nav_drawer_open">Open</string>
     <string name="nav_drawer_close">Close</string>
+
+    <!-- Ratings -->
+    <string name="addRating">Rating</string>
 </resources>
