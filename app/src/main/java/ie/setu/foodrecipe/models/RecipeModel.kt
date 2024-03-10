@@ -10,4 +10,5 @@ data class RecipeModel(var id: Long = 0,
                        var description: String = "",
                        var ingredients: MutableList<String> = mutableListOf(),
                        var cuisine: String = "",
+                       var ratings: MutableList<Float> = mutableListOf(),
                        var image: Uri = Uri.EMPTY) : Parcelable
