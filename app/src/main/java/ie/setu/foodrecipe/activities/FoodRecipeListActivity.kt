@@ -2,6 +2,7 @@ package ie.setu.foodrecipe.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -26,9 +27,6 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityFoodRecipeListBinding
-
-    // Dark mode theme
-    private var isDarkTheme = false
 
     // Nav Drawer
     private lateinit var drawerLayout: DrawerLayout
@@ -67,14 +65,18 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_dark_mode -> {
-                    if(isDarkTheme) {
+                    val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                    val isNightModeEnabled = currentNightMode == Configuration.UI_MODE_NIGHT_YES
+
+                    if (isNightModeEnabled) {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     } else {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     }
-                    isDarkTheme = !isDarkTheme
-                    Toast.makeText(this, "Dark Mode Toggle", Toast.LENGTH_SHORT).show()
+                    // Recreate the activity to apply the new theme
+                    recreate()
                     drawerLayout.closeDrawer(GravityCompat.START)
+                    Toast.makeText(this, "Dark Mode Toggle", Toast.LENGTH_SHORT).show()
                 }
             }
             // return true, The event has been handled and no further action is needed
