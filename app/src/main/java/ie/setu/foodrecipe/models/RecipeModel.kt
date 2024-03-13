@@ -11,4 +11,6 @@ data class RecipeModel(var id: Long = 0,
                        var ingredients: MutableList<String> = mutableListOf(),
                        var cuisine: String = "",
                        var ratings: MutableList<Float> = mutableListOf(),
-                       var image: Uri = Uri.EMPTY) : Parcelable
+                       var image: Uri = Uri.EMPTY,
+                       var creationTimestamp: Long = System.currentTimeMillis(),
+                       var lastEditedTimestamp: Long? = null) : Parcelable
