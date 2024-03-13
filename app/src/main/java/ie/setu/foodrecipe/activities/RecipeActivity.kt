@@ -178,6 +178,8 @@ class RecipeActivity : AppCompatActivity() {
             if (recipe.title.isNotEmpty()) {
                 if (edit) {
                     app.recipes.update(recipe.copy())
+                    // Update lastEditedTimestamp when the save button is pressed and recipe is actually updated
+                    recipe.lastEditedTimestamp = System.currentTimeMillis()
                     i("update Button Pressed: ${recipe.title}")
                 } else {
                     app.recipes.create(recipe.copy())
