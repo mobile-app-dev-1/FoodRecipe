@@ -20,6 +20,9 @@ Welcome to FoodRecipe, an Android application developed in Kotlin that allows us
 
 5. **Sort and Filter**: Organize your recipes by sorting them based on criteria like name, date added, or category.
 
+## Wireframe & Color Palette
+![Wireframe](https://i.imgur.com/t8R7AEk.png)
+
 ## Screenshots
 
 ![Screenhots](https://i.imgur.com/jQ4f749.png)
