@@ -88,6 +88,7 @@ class RecipeActivity : AppCompatActivity() {
 
             if (newIngredient.isNotEmpty()) {
                 ingredientList.add(newIngredient)
+
                 ingredientAdapter.notifyDataSetChanged()
 
                 i("IngredientList" + ingredientList.toString())
