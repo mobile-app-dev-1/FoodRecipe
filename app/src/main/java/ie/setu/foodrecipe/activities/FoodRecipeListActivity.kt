@@ -131,6 +131,8 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
             if (it.resultCode == Activity.RESULT_OK) {
                 (binding.recyclerView.adapter)?.
                 notifyItemRangeChanged(0,app.recipes.findAll().size)
+                // tell the recyclerView that the data (could) have changed, i.e. could delete a recipe
+                (binding.recyclerView.adapter as? FoodRecipeAdapter)?.notifyDataSetChanged()
             }
             if(it.resultCode == Activity.RESULT_CANCELED) {
                 Snackbar.make(binding.root, "Recipe Add Cancelled", Snackbar.LENGTH_LONG).show()

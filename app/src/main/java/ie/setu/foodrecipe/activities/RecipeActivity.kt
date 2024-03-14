@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import ie.setu.foodrecipe.R
+import ie.setu.foodrecipe.adapters.FoodRecipeAdapter
 import ie.setu.foodrecipe.adapters.IngredientAdapter
 import ie.setu.foodrecipe.databinding.ActivityRecipeBinding
 import ie.setu.foodrecipe.helpers.showImagePicker
@@ -154,6 +155,15 @@ class RecipeActivity : AppCompatActivity() {
             binding.chooseImage.setText(R.string.button_updateImage)
             // Update Button Text for Saving Recipe
             binding.btnAddRecipe.setText(R.string.button_saveRecipe)
+
+            //delete click listener
+            binding.btnDeleteRecipe.setOnClickListener {
+                app.recipes.deleteById(recipe.id) // Call deleteById with the recipe ID
+                i("delete Button Pressed: ${recipe.title}")
+                //(binding.recyclerView.adapter as? FoodRecipeAdapter)?.notifyDataSetChanged()
+                setResult(RESULT_OK)
+                finish()
+            }
         }
 
         // Button listener for adding an image
