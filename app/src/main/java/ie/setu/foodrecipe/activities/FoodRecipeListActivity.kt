@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -82,6 +83,19 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
             // return true, The event has been handled and no further action is needed
             true
         }
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                (binding.recyclerView.adapter as? FoodRecipeAdapter)?.filter?.filter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                (binding.recyclerView.adapter as? FoodRecipeAdapter)?.filter?.filter(newText)
+                return true
+            }
+
+        })
     }
 
     // Override the method to the load the new menu xml
