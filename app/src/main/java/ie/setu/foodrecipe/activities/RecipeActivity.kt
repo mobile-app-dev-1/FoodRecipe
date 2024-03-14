@@ -121,6 +121,9 @@ class RecipeActivity : AppCompatActivity() {
             ingredientAdapter.notifyDataSetChanged()  // Notify the adapter of the initial data
             binding.recyclerView.adapter = ingredientAdapter
 
+            // Show the delete recipe button
+            binding.btnDeleteRecipe.visibility = View.VISIBLE
+
             // Set up the spinner selection based on the recipe's cuisine
             val cuisineIndex = cuisineTypes.indexOf(recipe.cuisine)
             if (cuisineIndex != -1) {

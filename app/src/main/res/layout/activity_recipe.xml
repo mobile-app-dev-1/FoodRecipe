@@ -173,15 +173,37 @@
                 </LinearLayout>
 
                 <!-- Add Recipe / Save Recipe -->
-                <Button
-                    android:id="@+id/btnAddRecipe"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:backgroundTint="?attr/colorSecondary"
-                    android:text="@string/button_addRecipe" />
+                    android:orientation="horizontal">
+
+                    <!-- Delete Button -->
+                    <Button
+                        android:id="@+id/btnDeleteRecipe"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:backgroundTint="@color/md_theme_light_error"
+                        android:text="@string/button_deleteRecipe"
+                        android:visibility="gone" />
+
+                    <!-- Add Recipe Button -->
+                    <Button
+                        android:id="@+id/btnAddRecipe"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:backgroundTint="?attr/colorSecondary"
+                        android:text="@string/button_addRecipe" />
+
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>
