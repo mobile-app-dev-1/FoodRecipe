@@ -14,6 +14,7 @@
     <!-- Updating a Recipe -->
     <string name="button_saveRecipe">Save Recipe</string>
     <string name="button_updateImage">Update Image</string>
+    <string name="button_deleteRecipe">Delete</string>
 
     <!-- Action Bar -->
     <string name="menu_addRecipe">Add</string>
@@ -25,4 +26,7 @@
 
     <!-- Ratings -->
     <string name="addRating">Rating</string>
+
+    <!-- Search -->
+    <string name="searchRecipe">Search…</string>
 </resources>

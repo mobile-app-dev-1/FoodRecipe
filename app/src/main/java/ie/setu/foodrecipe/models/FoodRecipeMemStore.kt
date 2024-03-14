@@ -31,6 +31,17 @@ class FoodRecipeMemStore : FoodRecipeStore{
         }
     }
 
+    override fun deleteById(id: Long) {
+        val iterator = recipes.iterator()
+        while (iterator.hasNext()) {
+            val recipe = iterator.next()
+            if (recipe.id == id) {
+                iterator.remove()
+                return
+            }
+        }
+    }
+
     fun logAll() {
         recipes.forEach{ i("${it}") }
     }
