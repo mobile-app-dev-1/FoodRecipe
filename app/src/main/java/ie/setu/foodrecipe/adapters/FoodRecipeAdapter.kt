@@ -1,5 +1,6 @@
 package ie.setu.foodrecipe.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
@@ -70,6 +71,7 @@ class FoodRecipeAdapter constructor(
                 return results
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 filteredRecipes = results?.values as? List<RecipeModel> ?: emptyList()
                 notifyDataSetChanged()
