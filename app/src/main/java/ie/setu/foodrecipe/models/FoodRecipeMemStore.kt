@@ -28,7 +28,8 @@ class FoodRecipeMemStore : FoodRecipeStore {
      *
      * @return A list of all recipes.
      */
-    override fun findAll(): List<RecipeModel> {
+    override suspend fun findAll(): List<RecipeModel> {
+        recipes.forEach { "RECIPES i(${it}) "}
         return recipes
         logAll()
     }
@@ -48,7 +49,7 @@ class FoodRecipeMemStore : FoodRecipeStore {
      *
      * @param recipe The updated recipe.
      */
-    override fun update(recipe: RecipeModel) {
+    override suspend fun update(recipe: RecipeModel) {
         val foundRecipe: RecipeModel? = recipes.find { p -> p.id == recipe.id }
         if (foundRecipe != null) {
             foundRecipe.title = recipe.title

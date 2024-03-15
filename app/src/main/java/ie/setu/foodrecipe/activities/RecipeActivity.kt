@@ -8,9 +8,9 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
@@ -21,6 +21,7 @@ import ie.setu.foodrecipe.databinding.ActivityRecipeBinding
 import ie.setu.foodrecipe.helpers.showImagePicker
 import ie.setu.foodrecipe.main.MainApp
 import ie.setu.foodrecipe.models.RecipeModel
+import kotlinx.coroutines.launch
 
 import timber.log.Timber.i
 
@@ -190,7 +191,10 @@ class RecipeActivity : AppCompatActivity() {
 
             if (recipe.title.isNotEmpty()) {
                 if (edit) {
-                    app.recipes.update(recipe.copy())
+                    lifecycleScope.launch {
+                        recipe.id = intent.extras?.getParcelable("recipe_id")!!
+                        app.recipes.update(recipe.copy())
+                    }
                     // Update lastEditedTimestamp when the save button is pressed and recipe is actually updated
                     recipe.lastEditedTimestamp = System.currentTimeMillis()
                     i("update Button Pressed: ${recipe.title}")

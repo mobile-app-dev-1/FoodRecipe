@@ -14,6 +14,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -23,6 +24,7 @@ import ie.setu.foodrecipe.main.MainApp
 import ie.setu.foodrecipe.adapters.FoodRecipeAdapter
 import ie.setu.foodrecipe.adapters.FoodRecipeListener
 import ie.setu.foodrecipe.models.RecipeModel
+import kotlinx.coroutines.launch
 
 class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
 
@@ -60,7 +62,9 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = FoodRecipeAdapter(app.recipes.findAll(), this)
+        lifecycleScope.launch{
+            binding.recyclerView.adapter = FoodRecipeAdapter(app.recipes.findAll(), this@FoodRecipeListActivity)
+        }
 
         // Set up NavigationView (drawer) item click listener
         navView.setNavigationItemSelectedListener { menuItem ->
@@ -129,8 +133,10 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
             ActivityResultContracts.StartActivityForResult()
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
-                (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.recipes.findAll().size)
+                lifecycleScope.launch {
+                    (binding.recyclerView.adapter)?.
+                    notifyItemRangeChanged(0,app.recipes.findAll().size)
+                }
                 // tell the recyclerView that the data (could) have changed, i.e. could delete a recipe
                 (binding.recyclerView.adapter as? FoodRecipeAdapter)?.notifyDataSetChanged()
             }
