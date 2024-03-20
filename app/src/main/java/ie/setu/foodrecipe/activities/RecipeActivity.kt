@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import ie.setu.foodrecipe.R
+import ie.setu.foodrecipe.adapters.FoodRecipeAdapter
 import ie.setu.foodrecipe.adapters.IngredientAdapter
 import ie.setu.foodrecipe.databinding.ActivityRecipeBinding
 import ie.setu.foodrecipe.helpers.showImagePicker
@@ -158,7 +159,7 @@ class RecipeActivity : AppCompatActivity() {
 
             //delete click listener
             binding.btnDeleteRecipe.setOnClickListener {
-                lifecycleScope.launch {
+                lifecycleScope.launch{
                     app.recipes.deleteById(recipe.id) // Call deleteById with the recipe ID
                 }
                 i("delete Button Pressed: ${recipe.title}")
@@ -177,14 +178,15 @@ class RecipeActivity : AppCompatActivity() {
         // new button listner for (updating) not creating a new one
         // Click Listener for adding the recipe
         binding.btnAddRecipe.setOnClickListener() {
-            i("SAVE OR UPDATE CLICKED")
             recipe.title = binding.recipeTitle.text.toString().trim()
             recipe.description = binding.recipeDescription.text.toString()
 
             val newIngredient = binding.recipeIngredient.text.toString().trim()
 
-            // Include the selectedRating while updating or creating a recipe
-            recipe.ratings.add(selectedRating)
+            // Include the selectedRating while updating or creating a recipe (if rating is 0) do not add it, min rating should be 1
+            if(selectedRating != 0f){
+                recipe.ratings.add(selectedRating)
+            }
 
             // Check if the new ingredient is not empty before adding it
             if (newIngredient.isNotEmpty()) {
@@ -195,7 +197,6 @@ class RecipeActivity : AppCompatActivity() {
                 if (edit) {
                     lifecycleScope.launch {
                         recipe.id = intent.getStringExtra("recipeId")!!
-                        i("SAVE RECIPE with ID: ${recipe.id}")
                         app.recipes.update(recipe.copy())
                     }
                     // Update lastEditedTimestamp when the save button is pressed and recipe is actually updated
@@ -206,9 +207,7 @@ class RecipeActivity : AppCompatActivity() {
                     i("add Button Pressed: ${recipe.title}")
                 }
                 // Refresh the recyler view because a new recipe could have been added or a recipe could have been updated
-                lifecycleScope.launch {
-                    //(binding.recyclerView.adapter)?.notifyItemRangeChanged(0,app.recipes.findAll().size)
-                }
+                (binding.recyclerView.adapter as? FoodRecipeAdapter)?.notifyDataSetChanged()
                 setResult(RESULT_OK)
                 finish()
             } else {

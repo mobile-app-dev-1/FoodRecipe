@@ -51,6 +51,7 @@ class FoodRecipeAdapter constructor(
         }
     }
 
+
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
