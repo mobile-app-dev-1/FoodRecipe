@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -198,6 +197,8 @@ class RecipeActivity : AppCompatActivity() {
                     app.recipes.create(recipe.copy())
                     i("add Button Pressed: ${recipe.title}")
                 }
+                // Refresh the recyler view because a new recipe could have been added or a recipe could have been updated
+                (binding.recyclerView.adapter as? FoodRecipeAdapter)?.notifyDataSetChanged()
                 setResult(RESULT_OK)
                 finish()
             } else {
