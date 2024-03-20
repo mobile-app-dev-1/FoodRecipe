@@ -16,17 +16,19 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import ie.setu.foodrecipe.R
 import ie.setu.foodrecipe.databinding.ActivityFoodRecipeListBinding
 import ie.setu.foodrecipe.main.MainApp
 import ie.setu.foodrecipe.adapters.FoodRecipeAdapter
 import ie.setu.foodrecipe.adapters.FoodRecipeListener
-import ie.setu.foodrecipe.models.FoodRecipeFirebaseStore
 import ie.setu.foodrecipe.models.RecipeModel
 import kotlinx.coroutines.launch
-import timber.log.Timber.i
 
 class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
 
@@ -86,6 +88,9 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
                     drawerLayout.closeDrawer(GravityCompat.START)
                     Toast.makeText(this, "Dark Mode Toggle", Toast.LENGTH_SHORT).show()
                 }
+                R.id.nav_logout -> {
+                    signOutUser()
+                }
             }
             // return true, The event has been handled and no further action is needed
             true
@@ -103,6 +108,20 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
             }
 
         })
+    }
+
+    private fun signOutUser() {
+        // Sign out from Firebase Authentication
+        Firebase.auth.signOut()
+
+        // Revoke access if using Google Sign-In
+        val signInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN)
+        signInClient.signOut().addOnCompleteListener {
+            // Navigate to the sign-in screen regardless of the outcome
+            val intent = Intent(this, SignInScreenActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     // Override the method to the load the new menu xml

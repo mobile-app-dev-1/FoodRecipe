@@ -159,7 +159,7 @@ class RecipeActivity : AppCompatActivity() {
 
             //delete click listener
             binding.btnDeleteRecipe.setOnClickListener {
-                lifecycleScope.launch{
+                lifecycleScope.launch {
                     app.recipes.deleteById(recipe.id) // Call deleteById with the recipe ID
                 }
                 i("delete Button Pressed: ${recipe.title}")
@@ -183,10 +183,8 @@ class RecipeActivity : AppCompatActivity() {
 
             val newIngredient = binding.recipeIngredient.text.toString().trim()
 
-            // Include the selectedRating while updating or creating a recipe (if rating is 0) do not add it, min rating should be 1
-            if(selectedRating != 0f){
-                recipe.ratings.add(selectedRating)
-            }
+            // Include the selectedRating while updating or creating a recipe
+            recipe.ratings.add(selectedRating)
 
             // Check if the new ingredient is not empty before adding it
             if (newIngredient.isNotEmpty()) {
@@ -196,7 +194,7 @@ class RecipeActivity : AppCompatActivity() {
             if (recipe.title.isNotEmpty()) {
                 if (edit) {
                     lifecycleScope.launch {
-                        recipe.id = intent.getStringExtra("recipeId")!!
+                        recipe.id = intent.extras?.getParcelable("recipe_id")!!
                         app.recipes.update(recipe.copy())
                     }
                     // Update lastEditedTimestamp when the save button is pressed and recipe is actually updated
