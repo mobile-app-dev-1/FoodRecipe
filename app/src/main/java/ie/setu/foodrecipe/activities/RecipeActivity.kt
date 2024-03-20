@@ -202,6 +202,8 @@ class RecipeActivity : AppCompatActivity() {
                     app.recipes.create(recipe.copy())
                     i("add Button Pressed: ${recipe.title}")
                 }
+                // Refresh the recyler view because a new recipe could have been added or a recipe could have been updated
+                (binding.recyclerView.adapter as? FoodRecipeAdapter)?.notifyDataSetChanged()
                 setResult(RESULT_OK)
                 finish()
             } else {
