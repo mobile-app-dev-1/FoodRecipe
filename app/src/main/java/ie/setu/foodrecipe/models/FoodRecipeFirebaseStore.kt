@@ -26,7 +26,7 @@ class FoodRecipeFirebaseStore : FoodRecipeStore {
                 for (document in result) {
                     recipesList.add(
                         RecipeModel(
-                            id = ((document.data["id"] as? Long)?.toLong() ?: 0L),
+                            id = document.data["id"] as String,
                             title = document.data["title"] as? String ?: "",
                             description = document.data["description"] as? String ?: "",
                             ingredients = (document.data["ingredients"] as? List<String>)?.toMutableList() ?: mutableListOf(),
@@ -56,7 +56,7 @@ class FoodRecipeFirebaseStore : FoodRecipeStore {
 
         val data = mutableMapOf<String, Any>().apply {
             // Add fields directly into the map
-            put("id", UUID.randomUUID())
+            put("id", UUID.randomUUID().toString())
             put("title", recipe.title)
             put("description", recipe.description)
             put("ingredients", recipe.ingredients.toMutableList())
@@ -79,16 +79,18 @@ class FoodRecipeFirebaseStore : FoodRecipeStore {
 
     // updating a recipe in the Firebase store
     override suspend fun update(recipe: RecipeModel) {
-        i("START OF UPDATE ID ${recipe}")
-        val recipeId = recipe.id.toString()
+        val recipeId = recipe.id
 
-        // Query Firestore to find the document with the specified id
-        val documentSnapshot = recipeDocuments.document(recipeId).get().await()
+        // Query Firestore to find the document with the specified custom UUID
+        val querySnapshot = recipeDocuments.whereEqualTo("id", recipeId).get().await()
 
-        if (!documentSnapshot.exists()) {
-            i("Document with id $recipeId not found")
+        if (querySnapshot.isEmpty) {
+            i("Document with uuid $recipeId not found")
             return
         }
+
+        // Assuming there's only one document with the specified UUID
+        val documentSnapshot = querySnapshot.documents[0]
 
         // Create a map of data to update
         val data = mutableMapOf<String, Any>().apply {
@@ -103,30 +105,14 @@ class FoodRecipeFirebaseStore : FoodRecipeStore {
         }
 
         // Update the document using merge option to update only the specified fields
-        recipeDocuments.document(recipeId).set(data, SetOptions.merge()).await()
+        documentSnapshot.reference.set(data, SetOptions.merge()).await()
         i("DocumentSnapshot successfully updated!")
     }
 
-
-
-    override fun deleteById(id: Long) {
-        val recipeId = id.toString()
-        val recipeRef = recipeDocuments.document(recipeId)
-
-        recipeRef
-            .delete()
-            .addOnSuccessListener {
-                i("DocumentSnapshot successfully deleted!")
-            }
-            .addOnFailureListener { e ->
-                i("Error deleting document: $e")
-                throw e
-            }
+    override suspend fun deleteById(id: String) {
+        val recipeRef = recipeDocuments.whereEqualTo("id", id).get().await()
+        val documentSnapshot = recipeRef.documents[0]
+        documentSnapshot.reference.delete().await()
+        i("DocumentSnapshot successfully deleted!")
     }
-
-
-    /*override fun delete(placemark: PlacemarkModel) {
-        //  val placemarkReference = databaseReference.child(placemark.id.toString())
-        //  placemarkReference.removeValue()
-    }*/
 }

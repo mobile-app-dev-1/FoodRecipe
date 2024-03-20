@@ -159,7 +159,9 @@ class RecipeActivity : AppCompatActivity() {
 
             //delete click listener
             binding.btnDeleteRecipe.setOnClickListener {
-                app.recipes.deleteById(recipe.id) // Call deleteById with the recipe ID
+                lifecycleScope.launch {
+                    app.recipes.deleteById(recipe.id) // Call deleteById with the recipe ID
+                }
                 i("delete Button Pressed: ${recipe.title}")
                 //(binding.recyclerView.adapter as? FoodRecipeAdapter)?.notifyDataSetChanged()
                 setResult(RESULT_OK)
@@ -176,6 +178,7 @@ class RecipeActivity : AppCompatActivity() {
         // new button listner for (updating) not creating a new one
         // Click Listener for adding the recipe
         binding.btnAddRecipe.setOnClickListener() {
+            i("SAVE OR UPDATE CLICKED")
             recipe.title = binding.recipeTitle.text.toString().trim()
             recipe.description = binding.recipeDescription.text.toString()
 
@@ -192,7 +195,8 @@ class RecipeActivity : AppCompatActivity() {
             if (recipe.title.isNotEmpty()) {
                 if (edit) {
                     lifecycleScope.launch {
-                        recipe.id = intent.extras?.getParcelable("recipe_id")!!
+                        recipe.id = intent.getStringExtra("recipeId")!!
+                        i("SAVE RECIPE with ID: ${recipe.id}")
                         app.recipes.update(recipe.copy())
                     }
                     // Update lastEditedTimestamp when the save button is pressed and recipe is actually updated
@@ -203,7 +207,9 @@ class RecipeActivity : AppCompatActivity() {
                     i("add Button Pressed: ${recipe.title}")
                 }
                 // Refresh the recyler view because a new recipe could have been added or a recipe could have been updated
-                (binding.recyclerView.adapter as? FoodRecipeAdapter)?.notifyDataSetChanged()
+                lifecycleScope.launch {
+                    //(binding.recyclerView.adapter)?.notifyItemRangeChanged(0,app.recipes.findAll().size)
+                }
                 setResult(RESULT_OK)
                 finish()
             } else {

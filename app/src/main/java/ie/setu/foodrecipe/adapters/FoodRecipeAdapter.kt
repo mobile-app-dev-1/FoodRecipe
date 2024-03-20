@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import ie.setu.foodrecipe.databinding.CardFoodrecipeBinding
 import ie.setu.foodrecipe.models.RecipeModel
+import timber.log.Timber.i
 
 interface FoodRecipeListener {
     fun onFoodRecipeClick(foodrecipe: RecipeModel)
@@ -33,12 +34,19 @@ class FoodRecipeAdapter constructor(
         holder.bind(recipe, listener)
     }
 
+    fun updateRecipes(newRecipes: List<RecipeModel>) {
+        recipes = newRecipes
+        filteredRecipes = newRecipes // Update filteredRecipes if needed
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int = filteredRecipes.size
 
     class MainHolder(private val binding: CardFoodrecipeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(recipe: RecipeModel, listener: FoodRecipeListener) {
+            binding.recipeId.text = recipe.id.toString()
             binding.foodRecipeTitle.text = recipe.title
             binding.foodRecipeDescription.text = recipe.description
             binding.foodRecipeCardCuisine.text = recipe.cuisine

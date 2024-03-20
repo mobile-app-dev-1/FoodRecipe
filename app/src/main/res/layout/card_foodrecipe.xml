@@ -49,6 +49,14 @@
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     tools:text="A Description" />
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/recipeId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                tools:text="A recipe id"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <!-- New LinearLayout for attributes/tags -->

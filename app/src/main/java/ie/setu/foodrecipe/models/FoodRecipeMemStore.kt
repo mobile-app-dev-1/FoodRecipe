@@ -12,7 +12,7 @@ var lastId = 0L
  *
  * @return The next available ID.
  */
-internal fun getId() = lastId++
+internal fun getId() = lastId++.toString()
 
 /**
  * An in-memory implementation of [FoodRecipeStore] interface to store recipe data.
@@ -67,7 +67,7 @@ class FoodRecipeMemStore : FoodRecipeStore {
      *
      * @param id The ID of the recipe to be deleted.
      */
-    override fun deleteById(id: Long) {
+    override suspend fun deleteById(id: String) {
         val iterator = recipes.iterator()
         while (iterator.hasNext()) {
             val recipe = iterator.next()

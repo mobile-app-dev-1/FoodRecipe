@@ -23,8 +23,10 @@ import ie.setu.foodrecipe.databinding.ActivityFoodRecipeListBinding
 import ie.setu.foodrecipe.main.MainApp
 import ie.setu.foodrecipe.adapters.FoodRecipeAdapter
 import ie.setu.foodrecipe.adapters.FoodRecipeListener
+import ie.setu.foodrecipe.models.FoodRecipeFirebaseStore
 import ie.setu.foodrecipe.models.RecipeModel
 import kotlinx.coroutines.launch
+import timber.log.Timber.i
 
 class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
 
@@ -62,6 +64,7 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
+
         lifecycleScope.launch{
             binding.recyclerView.adapter = FoodRecipeAdapter(app.recipes.findAll(), this@FoodRecipeListActivity)
         }
@@ -133,12 +136,12 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
             ActivityResultContracts.StartActivityForResult()
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
-                lifecycleScope.launch {
-                    (binding.recyclerView.adapter)?.
-                    notifyItemRangeChanged(0,app.recipes.findAll().size)
+                lifecycleScope.launch{
+                    binding.recyclerView.adapter = FoodRecipeAdapter(app.recipes.findAll(), this@FoodRecipeListActivity)
                 }
                 // tell the recyclerView that the data (could) have changed, i.e. could delete a recipe
                 (binding.recyclerView.adapter as? FoodRecipeAdapter)?.notifyDataSetChanged()
+
             }
             if(it.resultCode == Activity.RESULT_CANCELED) {
                 Snackbar.make(binding.root, "Recipe Add Cancelled", Snackbar.LENGTH_LONG).show()
@@ -147,6 +150,7 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
 
     override fun onFoodRecipeClick(recipe: RecipeModel) {
         val launcherIntent = Intent(this, RecipeActivity::class.java)
+        launcherIntent.putExtra("recipeId", recipe.id)
         launcherIntent.putExtra("foodrecipe_edit", recipe)
         getResult.launch(launcherIntent)
     }
