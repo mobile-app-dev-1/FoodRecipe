@@ -5,7 +5,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
-import timber.log.Timber
 import timber.log.Timber.i
 import java.util.UUID
 import kotlin.coroutines.resume

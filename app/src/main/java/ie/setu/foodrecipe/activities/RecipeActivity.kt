@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import ie.setu.foodrecipe.R
-import ie.setu.foodrecipe.adapters.FoodRecipeAdapter
 import ie.setu.foodrecipe.adapters.IngredientAdapter
 import ie.setu.foodrecipe.databinding.ActivityRecipeBinding
 import ie.setu.foodrecipe.helpers.showImagePicker
