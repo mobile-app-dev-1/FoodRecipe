@@ -74,6 +74,11 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
         // Set up NavigationView (drawer) item click listener
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+                R.id.nav_account -> {
+                    val intent = Intent(this, AccountActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
                 R.id.nav_dark_mode -> {
                     val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
                     val isNightModeEnabled = currentNightMode == Configuration.UI_MODE_NIGHT_YES
