@@ -38,9 +38,11 @@ class AccountActivity : AppCompatActivity() {
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         if (currentUser != null) {
-            Picasso.get()
-                .load(currentUser.photoUrl)
-                .into(binding.accountPhoto)
+            if(currentUser.photoUrl != null) {
+                Picasso.get()
+                    .load(currentUser.photoUrl)
+                    .into(binding.accountPhoto)
+            }
             binding.accountName.text = currentUser.displayName
             binding.accountEmail.text = currentUser.email
             binding.accountUID.text = currentUser.uid

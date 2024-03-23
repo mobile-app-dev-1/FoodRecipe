@@ -35,7 +35,7 @@ import java.util.Date
 import java.util.Locale
 
 
-class RecipeActivity : AppCompatActivity() {
+class RecipeActivity : AppCompatActivity(), IngredientAdapter.OnDeleteListener {
 
     private lateinit var binding: ActivityRecipeBinding
     var recipe = RecipeModel()
@@ -63,11 +63,11 @@ class RecipeActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false).apply {
             stackFromEnd = true
         }
-        ingredientAdapter = IngredientAdapter(ingredientList)
+        ingredientAdapter = IngredientAdapter(ingredientList, this)
         binding.recyclerView.adapter = ingredientAdapter
 
         // Dropdown spinner for cuisine types
-        val cuisineTypes = listOf("Pick a cuisine", "Irish", "Italian", "Japanese", "Mexican", "Indian", "Chinese")
+        val cuisineTypes = listOf("Pick a cuisine", "English", "Italian", "Japanese", "Mexican", "Indian", "Chinese")
 
         val cuisineSpinner = binding.cuisineSpinner
 
@@ -230,6 +230,11 @@ class RecipeActivity : AppCompatActivity() {
                 Snackbar.make(it, "Please Enter a title", Snackbar.LENGTH_LONG).show()
             }
         }
+    }
+
+    override fun onDeleteItem(position: Int) {
+        recipe.ingredients.removeAt(position)
+        ingredientAdapter.notifyItemRemoved(position)
     }
 
     // inflate the new menu for this activity
