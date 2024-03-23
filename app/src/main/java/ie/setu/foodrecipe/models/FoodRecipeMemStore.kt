@@ -34,6 +34,10 @@ class FoodRecipeMemStore : FoodRecipeStore {
         logAll()
     }
 
+    override suspend fun findAllByUserID(uid: String): List<RecipeModel> {
+        TODO("Not yet implemented")
+    }
+
     /**
      * Adds a new recipe to the memory store.
      *

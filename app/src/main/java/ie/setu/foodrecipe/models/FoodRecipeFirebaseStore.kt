@@ -33,9 +33,42 @@ class FoodRecipeFirebaseStore : FoodRecipeStore {
                             ratings = (document.data["ratings"] as? List<Float>)?.toMutableList() ?: mutableListOf(),
                             image = Uri.parse(document.data["image"] as? String ?: ""), // Parse the Uri as a String
                             creationTimestamp = (document.data["creationTimestamp"] as? Long) ?: 0,
-                            lastEditedTimestamp = (document.data["lastEditedTimestamp"] as? Long)
+                            lastEditedTimestamp = (document.data["lastEditedTimestamp"] as? Long),
+                            createdByUser = (document.data["createdByUser"] as String)
                         )
                     )
+                }
+                continuation.resume(recipesList)
+            }
+            .addOnFailureListener { exception ->
+                i("Error getting documents $exception")
+                continuation.resumeWithException(exception)
+            }
+    }
+
+    // FindAllByUserId
+    suspend override fun findAllByUserID(uid: String): List<RecipeModel> = suspendCoroutine { continuation ->
+        val recipesList = mutableListOf<RecipeModel>()
+
+        recipeDocuments.get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    if(document.data["createdByUser"] == uid){
+                        recipesList.add(
+                            RecipeModel(
+                                id = document.data["id"] as String,
+                                title = document.data["title"] as? String ?: "",
+                                description = document.data["description"] as? String ?: "",
+                                ingredients = (document.data["ingredients"] as? List<String>)?.toMutableList() ?: mutableListOf(),
+                                cuisine = document.data["cuisine"] as? String ?: "",
+                                ratings = (document.data["ratings"] as? List<Float>)?.toMutableList() ?: mutableListOf(),
+                                image = Uri.parse(document.data["image"] as? String ?: ""), // Parse the Uri as a String
+                                creationTimestamp = (document.data["creationTimestamp"] as? Long) ?: 0,
+                                lastEditedTimestamp = (document.data["lastEditedTimestamp"] as? Long),
+                                createdByUser = (document.data["createdByUser"] as String)
+                            )
+                        )
+                    }
                 }
                 continuation.resume(recipesList)
             }
