@@ -17,6 +17,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import ie.setu.foodrecipe.R
 import ie.setu.foodrecipe.adapters.IngredientAdapter
@@ -219,6 +220,7 @@ class RecipeActivity : AppCompatActivity(), IngredientAdapter.OnDeleteListener {
                     recipe.lastEditedTimestamp = System.currentTimeMillis()
                     i("update Button Pressed: ${recipe.title}")
                 } else {
+                    recipe.createdByUser = FirebaseAuth.getInstance().currentUser?.uid.toString()
                     app.recipes.create(recipe.copy())
                     i("add Button Pressed: ${recipe.title}")
                 }

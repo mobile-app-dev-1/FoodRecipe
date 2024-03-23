@@ -63,6 +63,7 @@ class FoodRecipeFirebaseStore : FoodRecipeStore {
             put("ratings", recipe.ratings.toMutableList())
             put("image", recipe.image.toString()) // Store the Uri as a String
             put("creationTimestamp", recipe.creationTimestamp)
+            put("createdByUser", recipe.createdByUser)
             recipe.lastEditedTimestamp?.let { put("lastEditedTimestamp", it) }
         }
 
