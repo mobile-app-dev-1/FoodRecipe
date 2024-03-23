@@ -80,4 +80,8 @@ class FoodRecipeAdapter constructor(
             }
         }
     }
+
+    fun updateData(newRecipes: List<RecipeModel>) {
+        recipes = newRecipes
+    }
 }

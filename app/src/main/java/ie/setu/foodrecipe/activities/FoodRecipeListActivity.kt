@@ -3,7 +3,6 @@ package ie.setu.foodrecipe.activities
 import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,6 +10,7 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -20,13 +20,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
+import com.google.firebase.auth.FirebaseAuth
 import ie.setu.foodrecipe.R
-import ie.setu.foodrecipe.databinding.ActivityFoodRecipeListBinding
-import ie.setu.foodrecipe.main.MainApp
 import ie.setu.foodrecipe.adapters.FoodRecipeAdapter
 import ie.setu.foodrecipe.adapters.FoodRecipeListener
+import ie.setu.foodrecipe.databinding.ActivityFoodRecipeListBinding
+import ie.setu.foodrecipe.main.MainApp
 import ie.setu.foodrecipe.models.RecipeModel
 import kotlinx.coroutines.launch
 
@@ -115,12 +114,29 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
         })
     }
 
+    // override the onActivityResult, this is for updating the recyclerview after a delete or even an update on a recipe
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            // Update the dataset of the existing adapter with the latest data
+            lifecycleScope.launch {
+                (binding.recyclerView.adapter as? FoodRecipeAdapter)?.apply {
+                    updateData(app.recipes.findAll())
+                    notifyDataSetChanged() // Notify the adapter of the changes
+                }
+            }
+        }
+    }
+
     private fun signOutUser() {
         // Sign out from Firebase Authentication
-        Firebase.auth.signOut()
+        FirebaseAuth.getInstance().signOut()
 
         // Revoke access if using Google Sign-In
-        val signInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val signInClient = GoogleSignIn.getClient(
+            this,
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+        )
         signInClient.signOut().addOnCompleteListener {
             // Navigate to the sign-in screen regardless of the outcome
             val intent = Intent(this, SignInScreenActivity::class.java)
@@ -128,6 +144,8 @@ class FoodRecipeListActivity : AppCompatActivity(), FoodRecipeListener {
             finish()
         }
     }
+
+
 
     // Override the method to the load the new menu xml
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
