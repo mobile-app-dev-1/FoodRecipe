@@ -14,7 +14,10 @@
         android:theme="@style/Theme.MobileAssignment"
         tools:targetApi="31">
         <activity
-            android:name=".activities.FoodRecipeListActivity"
+            android:name=".activities.AccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SignInScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,9 +26,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.FoodRecipeListActivity"
+            android:exported="true"></activity>
+        <activity
             android:name=".activities.RecipeActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>

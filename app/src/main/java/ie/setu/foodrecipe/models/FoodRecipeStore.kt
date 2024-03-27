@@ -1,8 +1,9 @@
 package ie.setu.foodrecipe.models
 
 interface FoodRecipeStore {
-    fun findAll(): List<RecipeModel>
+    suspend fun findAll(): List<RecipeModel>
+    suspend fun findAllByUserID(uid: String): List<RecipeModel>
     fun create(recipe: RecipeModel)
-    fun update(recipe: RecipeModel)
-    fun deleteById(id: Long)
+    suspend fun update(recipe: RecipeModel)
+    suspend fun deleteById(id: String)
 }

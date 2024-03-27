@@ -1,8 +1,11 @@
 package ie.setu.foodrecipe.activities
 
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -10,21 +13,30 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import ie.setu.foodrecipe.R
-import ie.setu.foodrecipe.adapters.FoodRecipeAdapter
 import ie.setu.foodrecipe.adapters.IngredientAdapter
 import ie.setu.foodrecipe.databinding.ActivityRecipeBinding
 import ie.setu.foodrecipe.helpers.showImagePicker
 import ie.setu.foodrecipe.main.MainApp
 import ie.setu.foodrecipe.models.RecipeModel
+import kotlinx.coroutines.launch
 
 import timber.log.Timber.i
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.Thread.sleep
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
-class RecipeActivity : AppCompatActivity() {
+class RecipeActivity : AppCompatActivity(), IngredientAdapter.OnDeleteListener {
 
     private lateinit var binding: ActivityRecipeBinding
     var recipe = RecipeModel()
@@ -52,11 +64,11 @@ class RecipeActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false).apply {
             stackFromEnd = true
         }
-        ingredientAdapter = IngredientAdapter(ingredientList)
+        ingredientAdapter = IngredientAdapter(ingredientList, this)
         binding.recyclerView.adapter = ingredientAdapter
 
         // Dropdown spinner for cuisine types
-        val cuisineTypes = listOf("Pick a cuisine", "Irish", "Italian", "Japanese", "Mexican", "Indian", "Chinese")
+        val cuisineTypes = listOf("Pick a cuisine", "English", "Italian", "Japanese", "Mexican", "Indian", "Chinese")
 
         val cuisineSpinner = binding.cuisineSpinner
 
@@ -157,11 +169,15 @@ class RecipeActivity : AppCompatActivity() {
 
             //delete click listener
             binding.btnDeleteRecipe.setOnClickListener {
-                app.recipes.deleteById(recipe.id) // Call deleteById with the recipe ID
+                lifecycleScope.launch {
+                    app.recipes.deleteById(recipe.id) // Call deleteById with the recipe ID
+                    setResult(RESULT_OK)
+                    finish()
+                }
                 i("delete Button Pressed: ${recipe.title}")
                 //(binding.recyclerView.adapter as? FoodRecipeAdapter)?.notifyDataSetChanged()
-                setResult(RESULT_OK)
-                finish()
+                //setResult(RESULT_OK)
+                //finish()
             }
         }
 
@@ -180,7 +196,9 @@ class RecipeActivity : AppCompatActivity() {
             val newIngredient = binding.recipeIngredient.text.toString().trim()
 
             // Include the selectedRating while updating or creating a recipe
-            recipe.ratings.add(selectedRating)
+            if(selectedRating != 0f){
+                recipe.ratings.add(selectedRating)
+            }
 
             // Check if the new ingredient is not empty before adding it
             if (newIngredient.isNotEmpty()) {
@@ -189,22 +207,36 @@ class RecipeActivity : AppCompatActivity() {
 
             if (recipe.title.isNotEmpty()) {
                 if (edit) {
-                    app.recipes.update(recipe.copy())
+                    lifecycleScope.launch {
+                        recipe.id = intent.getStringExtra("recipeId")!!
+                        app.recipes.update(recipe.copy())
+                        // Add a delay, the update might take a little time to write in firebase,
+                        // once the intent is returned to List view the recyclerview will be updated with findAll(),
+                        // so the updates need to be written before calling finish()
+                        sleep(3000)
+                        //(binding.recyclerView.adapter as? FoodRecipeAdapter)?.notifyDataSetChanged()
+                    }
                     // Update lastEditedTimestamp when the save button is pressed and recipe is actually updated
                     recipe.lastEditedTimestamp = System.currentTimeMillis()
                     i("update Button Pressed: ${recipe.title}")
                 } else {
+                    recipe.createdByUser = FirebaseAuth.getInstance().currentUser?.uid.toString()
                     app.recipes.create(recipe.copy())
                     i("add Button Pressed: ${recipe.title}")
                 }
                 // Refresh the recyler view because a new recipe could have been added or a recipe could have been updated
-                (binding.recyclerView.adapter as? FoodRecipeAdapter)?.notifyDataSetChanged()
+                //(binding.recyclerView.adapter as? FoodRecipeAdapter)?.notifyDataSetChanged()
                 setResult(RESULT_OK)
                 finish()
             } else {
                 Snackbar.make(it, "Please Enter a title", Snackbar.LENGTH_LONG).show()
             }
         }
+    }
+
+    override fun onDeleteItem(position: Int) {
+        recipe.ingredients.removeAt(position)
+        ingredientAdapter.notifyItemRemoved(position)
     }
 
     // inflate the new menu for this activity
@@ -232,13 +264,37 @@ class RecipeActivity : AppCompatActivity() {
                 when(result.resultCode){
                     RESULT_OK -> {
                         if (result.data != null) {
-                            i("Got Result ${result.data!!.data}")
-                            recipe.image = result.data!!.data!!
-                            Picasso.get().load(recipe.image).into(binding.recipeImage)
-                        } // end of if
+                            val imageUri = result.data!!.data
+                            imageUri?.let { uri ->
+                                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                                val file = createImageFile()
+                                saveBitmapToFile(bitmap, file)
+                                recipe.image = file.toUri()
+                                Picasso.get().load(recipe.image).into(binding.recipeImage)
+                            }
+                        }
                     }
                     RESULT_CANCELED -> { } else -> { }
                 }
             }
+    }
+
+    // The image picker in the labs are only temporary images, meaning that once the app is closed, the content:// URI pointing to the image the user loaded no longer exists
+    // I've implemented my own way of getting the real image URI that's located on the device, instead of it starting with content:// it starts with file:// which loads the real file path of the image
+
+    private fun createImageFile(): File {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_",
+            ".jpg",
+            storageDir
+        )
+    }
+
+    private fun saveBitmapToFile(bitmap: Bitmap, file: File) {
+        FileOutputStream(file).use { out ->
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+        }
     }
 }

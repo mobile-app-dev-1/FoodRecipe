@@ -5,7 +5,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class RecipeModel(var id: Long = 0,
+data class RecipeModel(var id: String = "",
                        var title: String = "",
                        var description: String = "",
                        var ingredients: MutableList<String> = mutableListOf(),
@@ -13,4 +13,5 @@ data class RecipeModel(var id: Long = 0,
                        var ratings: MutableList<Float> = mutableListOf(),
                        var image: Uri = Uri.EMPTY,
                        var creationTimestamp: Long = System.currentTimeMillis(),
-                       var lastEditedTimestamp: Long? = null) : Parcelable
+                       var lastEditedTimestamp: Long? = null,
+                       var createdByUser: String = "") : Parcelable

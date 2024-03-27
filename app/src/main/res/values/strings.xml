@@ -29,4 +29,11 @@
 
     <!-- Search -->
     <string name="searchRecipe">Search…</string>
+
+    <!-- Account -->
+    <string name="myAccount">My Account</string>
+    <string name="myAccountEmail">Email: </string>
+    <string name="myAccountDateCreated">Created: </string>
+    <string name="myAccountUID">UID: </string>
+    <string name="myAccountMyRecipes">My Recipes</string>
 </resources>

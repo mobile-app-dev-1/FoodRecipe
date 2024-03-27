@@ -39,6 +39,7 @@ class FoodRecipeAdapter constructor(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(recipe: RecipeModel, listener: FoodRecipeListener) {
+            binding.recipeId.text = recipe.id
             binding.foodRecipeTitle.text = recipe.title
             binding.foodRecipeDescription.text = recipe.description
             binding.foodRecipeCardCuisine.text = recipe.cuisine
@@ -49,6 +50,7 @@ class FoodRecipeAdapter constructor(
             binding.root.setOnClickListener { listener.onFoodRecipeClick(recipe) }
         }
     }
+
 
     override fun getFilter(): Filter {
         return object : Filter() {
@@ -77,5 +79,9 @@ class FoodRecipeAdapter constructor(
                 notifyDataSetChanged()
             }
         }
+    }
+
+    fun updateData(newRecipes: List<RecipeModel>) {
+        recipes = newRecipes
     }
 }
