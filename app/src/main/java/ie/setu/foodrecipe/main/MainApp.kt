@@ -4,9 +4,8 @@ import android.app.Application
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import ie.setu.foodrecipe.models.FoodRecipeFirebaseStore
-import ie.setu.foodrecipe.models.FoodRecipeJSONStore
 import ie.setu.foodrecipe.models.FoodRecipeMemStore
-
+import ie.setu.foodrecipe.models.FoodRecipeJSONStore
 import ie.setu.foodrecipe.models.FoodRecipeSQLStore
 import timber.log.Timber
 import timber.log.Timber.i
@@ -14,8 +13,8 @@ import timber.log.Timber.i
 class MainApp : Application() {
 
     //lateinit var recipes: FoodRecipeMemStore
-    //lateinit var recipes: FoodRecipeFirebaseStore
-    lateinit var recipes: FoodRecipeJSONStore
+    lateinit var recipes: FoodRecipeFirebaseStore
+    //lateinit var recipes: FoodRecipeJSONStore
     //lateinit var recipes: FoodRecipeSQLStore
 
     override fun onCreate() {
@@ -29,6 +28,10 @@ class MainApp : Application() {
         val auth = FirebaseAuth.getInstance()
 
         // Initialize recipes after Firebase has been initialized
-        recipes = FoodRecipeJSONStore(applicationContext)
+        //recipes = FoodRecipeMemStore()
+        recipes = FoodRecipeFirebaseStore()
+
+        //recipes = FoodRecipeJSONStore(applicationContext)
+        //recipes = FoodRecipeSQLStore(applicationContext)
     }
 }
