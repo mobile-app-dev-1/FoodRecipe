@@ -35,7 +35,7 @@ class FoodRecipeMemStore : FoodRecipeStore {
     }
 
     override suspend fun findAllByUserID(uid: String): List<RecipeModel> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 
     /**
