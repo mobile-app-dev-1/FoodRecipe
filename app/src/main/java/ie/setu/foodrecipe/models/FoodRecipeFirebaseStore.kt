@@ -78,11 +78,6 @@ class FoodRecipeFirebaseStore : FoodRecipeStore {
             }
     }
 
-/*    override fun findById(id: Long): RecipeModel? {
-        //TODO not done yet
-        return RecipeModel()
-    }*/
-
     // Creating a recipe in the Firebase store
     override fun create(recipe: RecipeModel) {
 
