@@ -66,6 +66,9 @@ dependencies {
     // Also add the dependency for the Google Play services library and specify its version
     implementation("com.google.android.gms:play-services-auth:20.7.0")
 
-    // SQLite
+    // JSON Persistence
+    implementation ("com.google.code.gson:gson:2.10")
+
+    // SQLite Persistence
     implementation("androidx.sqlite:sqlite-ktx:2.4.0")
 }
