@@ -71,6 +71,8 @@ class FoodRecipeSQLStore(private val context: Context) : FoodRecipeStore {
             }
         }
 
+        i("SQL findAll() called -> $recipes")
+
         return recipes
     }
 
@@ -113,10 +115,10 @@ class FoodRecipeSQLStore(private val context: Context) : FoodRecipeStore {
             }
         }
 
+        i("SQL findAllByUserID() called -> $recipes")
+
         return recipes
     }
-
-
 
     override fun create(recipe: RecipeModel) {
         val values = ContentValues()
@@ -150,11 +152,14 @@ class FoodRecipeSQLStore(private val context: Context) : FoodRecipeStore {
 
 
         database.update(TABLE_NAME, values, "$COLUMN_ID = ?", arrayOf(recipe.id))
-    }
 
+        i("SQL create called")
+    }
 
     override suspend fun deleteById(id: String) {
         database.delete(TABLE_NAME, "$COLUMN_ID = ?", arrayOf(id))
+
+        i("SQL deleteById() called - id -> $id")
     }
 
     private class FoodRecipeDbHelper(context: Context) :
