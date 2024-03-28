@@ -34,8 +34,14 @@ class FoodRecipeMemStore : FoodRecipeStore {
         logAll()
     }
 
+    /**
+     * Retrieves all recipes created by a specific user.
+     *
+     * @param uid The user ID to filter recipes by.
+     * @return A list of recipes created by the specified user.
+     */
     override suspend fun findAllByUserID(uid: String): List<RecipeModel> {
-        return emptyList()
+        return recipes.filter { it.createdByUser == uid }
     }
 
     /**
