@@ -72,3 +72,4 @@ dependencies {
     // SQLite Persistence
     implementation("androidx.sqlite:sqlite-ktx:2.4.0")
 }
+
