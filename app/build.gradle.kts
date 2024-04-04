@@ -1,4 +1,3 @@
-import com.android.build.api.dsl.Packaging
 
 plugins {
     id("com.android.application")
@@ -16,17 +15,19 @@ android {
         viewBinding = true
     }
 
-    packagingOptions {
-        exclude("META-INF/NOTICE.md")
-        exclude("META-INF/DEPENDENCIES")
-        exclude("META-INF/LICENSE")
-        exclude("META-INF/LICENSE.md")
-        exclude("META-INF/license.md")
-        exclude("META-INF/NOTICE")
-        exclude("META-INF/NOTICE.md")
-        exclude("META-INF/notice.md")
-        exclude("META-INF/ASL2.0")
-        exclude("META-INF/*.kotlin_module")
+    packaging {
+        resources {
+            excludes += "META-INF/NOTICE.md"
+            excludes += "META-INF/DEPENDENCIES"
+            excludes += "META-INF/LICENSE"
+            excludes += "META-INF/LICENSE.md"
+            excludes +="META-INF/license.md"
+            excludes += "META-INF/NOTICE"
+            excludes +="META-INF/NOTICE.md"
+            excludes +="META-INF/notice.md"
+            excludes +="META-INF/ASL2.0"
+            excludes +="META-INF/*.kotlin_module"
+        }
     }
 
     defaultConfig {
