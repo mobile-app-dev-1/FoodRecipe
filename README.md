@@ -20,12 +20,24 @@ Welcome to FoodRecipe, an Android application developed in Kotlin that allows us
 
 5. **Sort and Filter**: Organize your recipes by sorting them based on criteria like name, date added, or category.
 
+6. **Authentication**: Google Signin and Email/Password.
+
+7.  **View Account**: View your account and see your created recipes and account info.
+
+8.  **Toogle Dark/Light Mode**: Toggle button in the navigation drawer for setting dark & light mode.
+
 ## Wireframe & Color Palette
 ![Wireframe](https://i.imgur.com/t8R7AEk.png)
 
 ## Screenshots
 
-![Screenhots](https://i.imgur.com/jQ4f749.png)
+### Light Mode
+
+![Screenhots](https://i.imgur.com/h2AcmCi.png)
+
+### Dark Mode
+
+![Screenhots](https://i.imgur.com/YGcr26w.png)
 
 ## Installation
 
@@ -42,9 +54,15 @@ To run the RecipeBook app on your device:
 
 ## Dependencies
 * firebase
+* firebase-ui-auth 8.0.2
+* firebase auth 20.7.0
 * parcelize
 * picasso
-* timber:4.7.1
+* timber 4.7.1
+* dokka 1.9.20
+* sqlite 2.4.0
+* gson 2.10
+* junit 1.1.5
 
 ## Contributing
 
