@@ -1,8 +1,11 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
+    id("org.jetbrains.dokka") version "1.9.20"
 }
 
 android {
@@ -11,6 +14,19 @@ android {
 
     buildFeatures {
         viewBinding = true
+    }
+
+    packagingOptions {
+        exclude("META-INF/NOTICE.md")
+        exclude("META-INF/DEPENDENCIES")
+        exclude("META-INF/LICENSE")
+        exclude("META-INF/LICENSE.md")
+        exclude("META-INF/license.md")
+        exclude("META-INF/NOTICE")
+        exclude("META-INF/NOTICE.md")
+        exclude("META-INF/notice.md")
+        exclude("META-INF/ASL2.0")
+        exclude("META-INF/*.kotlin_module")
     }
 
     defaultConfig {
@@ -71,5 +87,8 @@ dependencies {
 
     // SQLite Persistence
     implementation("androidx.sqlite:sqlite-ktx:2.4.0")
+
+    // For generating a Dokka Site from KDoc
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.10")
 }
 
